@@ -32,7 +32,7 @@ from hvad.compat.urls import urlencode
 from hvad.forms import TranslatableModelForm, translatable_inlineformset_factory, translatable_modelform_factory
 from hvad.utils import get_cached_translation, get_translation
 from hvad.manager import FALLBACK_LANGUAGES
-
+from hvad import settings as hvad_settings
 
 NEW_GET_DELETE_OBJECTS = LooseVersion(django.get_version()) >= LooseVersion('1.3')
 atomic = (transaction.atomic if django.VERSION >= (1, 6) else
@@ -40,7 +40,7 @@ atomic = (transaction.atomic if django.VERSION >= (1, 6) else
 
 
 def get_language_name(language_code):
-    return dict(settings.LANGUAGES).get(language_code, language_code)
+    return dict(settings.LANGUAGES + hvad_settings.HVAD_LANGUAGES).get(language_code, language_code)
 
 class InlineModelForm(TranslatableModelForm):
     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
@@ -112,7 +112,7 @@ class TranslatableModelAdminMixin(object):
         tabs = []
         get = dict(request.GET)
         language = self._language(request)
-        for key, name in settings.LANGUAGES:
+        for key, name in settings.LANGUAGES + hvad_settings.HVAD_LANGUAGES:
             get.update({'language': key})
             url = '%s?%s' % (request.path, urlencode(get))
             if language == key:

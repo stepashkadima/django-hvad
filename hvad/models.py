@@ -9,10 +9,11 @@ from hvad.descriptors import LanguageCodeAttribute, TranslatedAttribute
 from hvad.manager import TranslationManager, TranslationsModelManager
 from hvad.utils import SmartGetFieldByName
 from hvad.compat.method_type import MethodType
+from hvad import settings as hvad_settings
 import sys
 
 # maybe there should be an extra settings for this
-FALLBACK_LANGUAGES = tuple( code for code, name in settings.LANGUAGES )
+FALLBACK_LANGUAGES = tuple( code for code, name in settings.LANGUAGES + hvad_settings.HVAD_LANGUAGES)
 
 def create_translations_model(model, related_name, meta, **fields):
     """

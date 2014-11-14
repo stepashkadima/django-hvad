@@ -11,13 +11,14 @@ from django.db.models.query_utils import Q
 from django.utils.translation import get_language
 from hvad.fieldtranslator import translate
 from hvad.utils import combine
+from hvad import settings as hvad_settings
 import logging
 import sys
 
 logger = logging.getLogger(__name__)
 
 # maybe there should be an extra settings for this
-FALLBACK_LANGUAGES = [ code for code, name in settings.LANGUAGES ]
+FALLBACK_LANGUAGES = [ code for code, name in settings.LANGUAGES + hvad_settings.HVAD_LANGUAGES]
 
 class FieldTranslator(dict):
     """
